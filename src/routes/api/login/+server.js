@@ -6,7 +6,7 @@ import db from '$lib/db.js';
 const JWT_SECRET = 'your_jwt_secret'; // In a real app, use an environment variable
 
 export async function POST({ request }) {
-  console.log('Auth API route hit');
+  console.log('Login API route hit');
   try {
     const { username, password } = await request.json();
     console.log('Attempting login for user:', username);
@@ -29,7 +29,7 @@ export async function POST({ request }) {
     console.log('Login successful for user:', username);
     return json({ token });
   } catch (error) {
-    console.error('Error in auth API:', error);
+    console.error('Error in login API:', error);
     return json({ error: 'Internal server error' }, { status: 500 });
   }
 }

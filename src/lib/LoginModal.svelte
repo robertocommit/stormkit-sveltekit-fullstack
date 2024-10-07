@@ -10,7 +10,7 @@
 
     async function handleSubmit() {
         console.log(`Attempting to ${isRegistering ? 'register' : 'login'}`);
-        const endpoint = isRegistering ? '/api/register' : '/api/auth';
+        const endpoint = isRegistering ? '/api/register' : '/api/login'; // Changed from '/api/auth' to '/api/login'
         try {
             const response = await fetch(endpoint, {
                 method: 'POST',
