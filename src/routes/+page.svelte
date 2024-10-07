@@ -5,6 +5,7 @@
   let showLoginModal = false;
   let isLoggedIn = false;
   let username = '';
+  let helloMessage = '';
 
   function checkLoginStatus() {
     console.log('Checking login status');
@@ -23,6 +24,20 @@
     localStorage.removeItem('token');
     isLoggedIn = false;
     username = '';
+  }
+
+  async function testHelloEndpoint() {
+    try {
+      const response = await fetch('/api/hello');
+      console.log('Hello endpoint response status:', response.status);
+      const responseText = await response.text();
+      console.log('Hello endpoint raw response:', responseText);
+      const data = JSON.parse(responseText);
+      helloMessage = data.message;
+    } catch (error) {
+      console.error('Error fetching hello endpoint:', error);
+      helloMessage = 'Error: ' + error.message;
+    }
   }
 
   onMount(() => {
@@ -44,6 +59,15 @@
       <button on:click={() => showLoginModal = true} class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
         Login / Register
       </button>
+    {/if}
+  </div>
+
+  <div class="mb-4">
+    <button on:click={testHelloEndpoint} class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+      Test Hello Endpoint
+    </button>
+    {#if helloMessage}
+      <p class="mt-2">{helloMessage}</p>
     {/if}
   </div>
 
