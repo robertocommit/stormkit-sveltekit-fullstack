@@ -9,26 +9,37 @@
     let error = '';
 
     async function handleSubmit() {
+        console.log(`Attempting to ${isRegistering ? 'register' : 'login'}`);
         const endpoint = isRegistering ? '/api/register' : '/api/auth';
-        const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-        });
+        try {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
 
-        const data = await response.json();
+            console.log('Response status:', response.status);
+            const data = await response.json();
+            console.log('Response data:', data);
 
-        if (response.ok) {
-            if (!isRegistering) {
-                localStorage.setItem('token', data.token);
+            if (response.ok) {
+                if (!isRegistering) {
+                    localStorage.setItem('token', data.token);
+                    console.log('Token stored in localStorage');
+                }
+                dispatch('login');
+            } else {
+                error = data.error;
+                console.error('Error:', error);
             }
-            dispatch('login');
-        } else {
-            error = data.error;
+        } catch (err) {
+            console.error('Fetch error:', err);
+            error = 'An unexpected error occurred';
         }
     }
 
     function toggleMode() {
+        console.log(`Switching to ${isRegistering ? 'login' : 'register'} mode`);
         isRegistering = !isRegistering;
         error = '';
     }

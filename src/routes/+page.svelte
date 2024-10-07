@@ -7,20 +7,28 @@
   let username = '';
 
   function checkLoginStatus() {
+    console.log('Checking login status');
     const token = localStorage.getItem('token');
     isLoggedIn = !!token;
     if (isLoggedIn) {
       username = JSON.parse(atob(token.split('.')[1])).username;
+      console.log('User is logged in:', username);
+    } else {
+      console.log('User is not logged in');
     }
   }
 
   function logout() {
+    console.log('Logging out');
     localStorage.removeItem('token');
     isLoggedIn = false;
     username = '';
   }
 
-  onMount(checkLoginStatus);
+  onMount(() => {
+    console.log('Component mounted');
+    checkLoginStatus();
+  });
 </script>
 
 <div class="container mx-auto p-4">
